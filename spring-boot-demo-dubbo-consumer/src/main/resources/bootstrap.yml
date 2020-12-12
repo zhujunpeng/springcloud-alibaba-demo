@@ -20,7 +20,7 @@ spring:
         server-addr: 127.0.0.1:8848
         #指定yaml格式的配置
         file-extension: yaml
-        namespace: 89e39e0f-ad82-4a14-a3ae-900ad1c6c126
+        namespace: e19c8c63-a02b-4e62-a3a7-7aea88bf4f61
 dubbo:
   registry:
     # 指定注册中心为nacos
@@ -42,7 +42,7 @@ spring:
         server-addr: 127.0.0.1:8848
         #指定yaml格式的配置
         file-extension: yaml
-        namespace: 89e39e0f-ad82-4a14-a3ae-900ad1c6c126
+        namespace: e19c8c63-a02b-4e62-a3a7-7aea88bf4f61
 dubbo:
   registry:
     # 指定注册中心为nacos
@@ -64,7 +64,7 @@ spring:
         server-addr: 127.0.0.1:8848
         #指定yaml格式的配置
         file-extension: yaml
-        namespace: 45e646a8-0808-4836-bf0a-404af7feb78a
+        namespace: 3442b1ef-9d28-4369-8749-62803d841413
 dubbo:
   registry:
     # 指定注册中心为nacos
