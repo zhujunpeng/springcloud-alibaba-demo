@@ -1,0 +1,74 @@
+server:
+  port: 8081
+  servlet:
+    context-path: /demo
+spring:
+  profiles:
+    # 默认启用test分支
+    active: stable
+---
+spring:
+  profiles: dev
+  application:
+    name: spring-boot-demo-dubbo-consumer
+  cloud:
+    nacos:
+      # 注册中心地址
+      server-addr: 127.0.0.1:8848
+      config:
+        # 配置中心地址
+        server-addr: 127.0.0.1:8848
+        #指定yaml格式的配置
+        file-extension: yaml
+        namespace: 89e39e0f-ad82-4a14-a3ae-900ad1c6c126
+dubbo:
+  registry:
+    # 指定注册中心为nacos
+    address: nacos://127.0.0.1:8848
+  protocol:
+    name: dubbo
+    port: -1
+---
+spring:
+  profiles: test
+  application:
+    name: spring-boot-demo-dubbo-consumer
+  cloud:
+    nacos:
+      # 注册中心地址
+      server-addr: 127.0.0.1:8848
+      config:
+        # 配置中心地址
+        server-addr: 127.0.0.1:8848
+        #指定yaml格式的配置
+        file-extension: yaml
+        namespace: 89e39e0f-ad82-4a14-a3ae-900ad1c6c126
+dubbo:
+  registry:
+    # 指定注册中心为nacos
+    address: nacos://127.0.0.1:8848
+  protocol:
+    name: dubbo
+    port: -1
+---
+spring:
+  profiles: stable
+  application:
+    name: spring-boot-demo-dubbo-consumer
+  cloud:
+    nacos:
+      # 注册中心地址
+      server-addr: 127.0.0.1:8848
+      config:
+        # 配置中心地址
+        server-addr: 127.0.0.1:8848
+        #指定yaml格式的配置
+        file-extension: yaml
+        namespace: 45e646a8-0808-4836-bf0a-404af7feb78a
+dubbo:
+  registry:
+    # 指定注册中心为nacos
+    address: nacos://127.0.0.1:8848
+  protocol:
+    name: dubbo
+    port: -1
