@@ -4,7 +4,7 @@ import com.zjp.common.HelloService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.config.annotation.DubboReference;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -15,12 +15,13 @@ import org.springframework.web.bind.annotation.RestController;
  * @version: v1.0
  */
 @RestController
+@RequestMapping("hello")
 @Slf4j
 public class HelloController {
     @DubboReference
     private HelloService helloService;
 
-    @GetMapping("/sayHello")
+    @GetMapping("say")
     public String sayHello(@RequestParam(defaultValue = "xkcoding") String name) {
         log.info("i'm ready to call someone......");
         return helloService.sayHello(name);
