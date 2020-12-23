@@ -27,3 +27,15 @@ spring:
           filters:
             # 去除 consumer
             - StripPrefix=1
+            - name: RequestRateLimiter
+              args:
+                key-resolver: '#{@hostAddrKeyResolver}'
+                # 每秒允许通过多少个
+                redis-rate-limiter.replenishRate: 1
+                # 每秒最大允许通过多少个
+                redis-rate-limiter.burstCapacity: 3
+  redis:
+    host: 120.78.144.70
+    database: 8
+#    password:
+    port: 6379

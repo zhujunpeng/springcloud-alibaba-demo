@@ -22,6 +22,11 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-gateway</artifactId>
         </dependency>
+        <!--限流组件-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis-reactive</artifactId>
+        </dependency>
         <!--nacos:用于服务注册与发现-->
         <dependency>
             <groupId>com.alibaba.cloud</groupId>
