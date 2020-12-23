@@ -17,7 +17,13 @@ spring:
           uri: lb://provider-service
           predicates:
             - Path=/provider/**
+          filters:
+            # 去除 provider
+            - StripPrefix=1
         - id: SERVICE-CONSUMER
           uri: lb://consumer-service
           predicates:
             - Path=/consumer/**
+          filters:
+            # 去除 consumer
+            - StripPrefix=1
