@@ -1,0 +1,99 @@
+spring:
+  profiles:
+    # 默认启用dev分支
+    active: dev
+---
+spring:
+  profiles: dev
+  cloud:
+    nacos:
+      # 注册中心地址
+      discovery:
+        server-addr: 127.0.0.1:8848
+      config:
+        # 配置中心地址
+        server-addr: 127.0.0.1:8848
+        #指定yaml格式的配置
+        file-extension: yaml
+        namespace: e19c8c63-a02b-4e62-a3a7-7aea88bf4f61
+dubbo:
+  registry:
+    # 指定注册中心为nacos
+    address: nacos://127.0.0.1:8848
+  protocol:
+    name: dubbo
+    port: -1
+---
+spring:
+  profiles: test
+  cloud:
+    nacos:
+      # 注册中心地址
+      discovery:
+        server-addr: 127.0.0.1:8848
+      config:
+        # 配置中心地址
+        server-addr: 127.0.0.1:8848
+        #指定yaml格式的配置
+        file-extension: yaml
+        namespace: e19c8c63-a02b-4e62-a3a7-7aea88bf4f61
+dubbo:
+  registry:
+    # 指定注册中心为nacos
+    address: nacos://127.0.0.1:8848
+  protocol:
+    name: dubbo
+    port: -1
+---
+spring:
+  profiles: stable
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+      config:
+        # 配置中心地址
+        server-addr: 127.0.0.1:8848
+        #指定yaml格式的配置
+        file-extension: yaml
+        namespace: 3442b1ef-9d28-4369-8749-62803d841413
+dubbo:
+  registry:
+    # 指定注册中心为nacos
+    address: nacos://127.0.0.1:8848
+  protocol:
+    name: dubbo
+    port: -1
+---
+server:
+  port: 9100
+spring:
+  application:
+    name: oauth-service
+  redis:
+    host: 120.78.144.70
+    database: 8
+    #    password:
+    port: 6379
+  management:
+    endpoints:
+      web:
+        exposure:
+          include: "*"
+  freemarker:
+    prefix: .ftl   #springboot2.2以后的版本默认的是ftlh，如果不配置的话会找不到ftl
+  main:
+    allow-bean-definition-overriding: true
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      maximum-pool-size: 30
+      minimum-idle: 10
+      auto-commit: true
+      idle-timeout: 30000
+      pool-name: DatebookHikariCP
+      max-lifetime: 1800000
+      connection-timeout: 30000
+      connection-test-query: SELECT 1
+      jdbc-url: jdbc:mysql://rm-wz90hq5u1h0uan8qq9o.mysql.rds.aliyuncs.com:3306/test?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=GMT%2B8&allowPublicKeyRetrieval=true
