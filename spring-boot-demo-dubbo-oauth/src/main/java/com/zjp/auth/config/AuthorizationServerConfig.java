@@ -3,6 +3,7 @@ package com.zjp.auth.config;
 import com.zjp.auth.dto.UserDetailsDto;
 import com.zjp.auth.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -26,6 +27,7 @@ import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenEnhancer;
 import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
 import org.springframework.security.oauth2.provider.token.TokenStore;
+import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
 
 import javax.sql.DataSource;
@@ -49,6 +51,20 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     private UserDetailsServiceImpl userDetailsServiceImpl;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private RedisConnectionFactory redisConnectionFactory;
+    @Autowired
+    @Qualifier("jwtTokenStore")
+    private TokenStore tokenStore;
+    @Autowired
+    private JwtAccessTokenConverter jwtAccessTokenConverter;
+    @Autowired
+    private TokenEnhancer jwtTokenEnhancer;
+
+//    @Bean("redisTokenStore")
+//    public TokenStore redisTokenStore (){
+//        return new RedisTokenStore(redisConnectionFactory);
+//    }
 
     /**
      * 使用密码模式
@@ -57,7 +73,18 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
      */
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints){
-        endpoints.authenticationManager(authenticationManager).userDetailsService(userDetailsServiceImpl);
+        TokenEnhancerChain enhancerChain = new TokenEnhancerChain();
+        List<TokenEnhancer> delegates = new ArrayList<>();
+        delegates.add(jwtTokenEnhancer); //配置JWT的内容增强器
+        delegates.add(jwtAccessTokenConverter);
+        enhancerChain.setTokenEnhancers(delegates);
+        endpoints.authenticationManager(authenticationManager)
+                .userDetailsService(userDetailsServiceImpl)
+                // 配置令牌存储策略
+                .tokenStore(tokenStore)
+                .accessTokenConverter(jwtAccessTokenConverter)
+                .tokenEnhancer(enhancerChain);
+
     }
 
     @Override
@@ -68,8 +95,9 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
                 .accessTokenValiditySeconds(3600)//配置访问token的有效期
                 .refreshTokenValiditySeconds(864000)//配置刷新token的有效期
                 .redirectUris("http://www.baidu.com")//配置redirect_uri，用于授权成功后跳转
+                .autoApprove(true)// 自动授权
                 .scopes("all")//配置申请的权限范围
-                .authorizedGrantTypes("authorization_code","password");//配置grant_type，表示授权类型
+                .authorizedGrantTypes("authorization_code","password","refresh_token");//配置grant_type，表示授权类型
 
     }
 }
