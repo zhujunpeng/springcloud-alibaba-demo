@@ -36,15 +36,13 @@ public class JwtTokenStoreConfig {
 
     @Bean
     public TokenEnhancer jwtTokenEnhancer() {
-        return new TokenEnhancer() {
-            @Override
-            public OAuth2AccessToken enhance(OAuth2AccessToken accessToken, OAuth2Authentication oAuth2Authentication) {
-                Object principal = oAuth2Authentication.getPrincipal();
-                Map<String, Object> info = new HashMap<>();
-                info.put("userInfo", principal);
-                ((DefaultOAuth2AccessToken) accessToken).setAdditionalInformation(info);
-                return accessToken;
-            }
+        return (accessToken, oAuth2Authentication) -> {
+            Object principal = oAuth2Authentication.getPrincipal();
+            Map<String, Object> info = new HashMap<>();
+            info.put("userInfo", principal);
+            info.put("time",System.currentTimeMillis());
+            ((DefaultOAuth2AccessToken) accessToken).setAdditionalInformation(info);
+            return accessToken;
         };
     }
 }
